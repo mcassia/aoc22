@@ -11,9 +11,9 @@ class Solver(BaseSolver):
         'L': (-1, 0),
     }
 
-    def run2(self, text, lines):
+    def _run(self, lines, length):
 
-        rope = [(0, 0) for _ in range(10)]
+        rope = [(0, 0) for _ in range(length)]
         visited = {(0, 0)}
 
         # for every instruction
@@ -47,39 +47,11 @@ class Solver(BaseSolver):
         return len(visited)
 
     def run1(self, text, lines):
+        return self._run(lines, 2)
 
-        head = (0, 0)
-        tail = (0, 0)
-
-        tailHistory = {(0, 0)}
-
-        for line in lines:
-            direction, distance = line.split()
-            distance = int(distance)
-            dx, dy = self.DIRECTIONS[direction]
-
-            # move head one step at a time
-            for i in range(distance):
-
-                # move the head
-                hx, hy = head
-                nhx, nhy = hx + dx, hy + dy
-                head = (nhx, nhy)
-                hx, hy = head
-                print('HEAD', head)
-
-                # move the tail if needed
-                tx, ty = tail
-                if abs(nhx - tx) > 1 or abs(nhy - ty) > 1:
-                    ndx, ndy = nhx - tx, nhy - ty
-                    ndx = int(ndx / abs(ndx)) if ndx else ndx
-                    ndy = int(ndy / abs(ndy)) if ndy else ndy
-                    ntx, nty = tx + ndx, ty + ndy
-                    tail = (ntx, nty)
-                    tailHistory.add(tail)
-
-        return len(tailHistory)
+    def run2(self, text, lines):
+        return self._run(lines, 10)
 
 
 
-Solver().solve2(sample=False)
+Solver().solve1(sample=False)
